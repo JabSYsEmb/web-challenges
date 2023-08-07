@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=3.0" />
+    <title>Colorpicker Challenge</title>
+    <script>
+      let coloredObj = null;
+      function handleCreate(event) {
+        event.preventDefault();
+        const el = document.createElement("div"); // <div.magnifier>
+        el.classList.add("magnifier");
+
+        const properties = document.createElement("div"); // <div.properties>
+        properties.classList.add("properties");
+
+        // <span [delete, style, create] >
+        const items = [
+          { name: "Delete", func: (event) => handleDelete(event) },
+          { name: "Style", func: (event) => handleStyle(event) },
+          { name: "Create", func: (event) => handleCreate(event) },
+        ].map(({ name, func }) => {
+          const item = document.createElement("span");
+          item.innerHTML = `${name}`;
+          item.onclick = func;
+          item.classList.add("items");
+          return item;
+        });
+
+        items.forEach((item) => properties.appendChild(item));
+
+        el.appendChild(properties);
+
+        document.body.appendChild(el);
+        hydrate(el);
+        event.target.parentNode.style.display = "none";
+      }
+
+      function getParentByClass(node, className) {
+        let parent = node;
+        while (parent !== null && !parent.classList.contains(className)) {
+          parent = parent.parentNode;
+        }
+        if (parent) return parent;
+        else return null;
+      }
+
+      /**
+       * @param {MouseEvent} event
+       */
+      function handleStyle(event) {
+        event.preventDefault();
+        colorpicker.style.left = `${event.clientX}px`;
+        colorpicker.style.top = `${event.clientY}px`;
+        colorpicker.style.display = `inline`;
+        event.target.parentNode.style.display = "none";
+        coloredObj = getParentByClass(event.target, "magnifier");
+      }
+
+      function closeHandle(event) {
+        colorpicker.style.display = "none";
+      }
+
+      function handleDelete(event) {
+        event.preventDefault();
+        const parent = getParentByClass(event.target, "magnifier");
+        if (parent) parent.remove();
+      }
+
+      function colorHandle(event) {
+        if (!coloredObj) return;
+        coloredObj.style.background = event.target.value;
+      }
+    </script>
+
+    <style>
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        margin: 10px;
+      }
+
+      .magnifier {
+        position: absolute;
+        width: 90px;
+        height: 90px;
+        left: calc(50% - 45px);
+        top: calc(50% - 45px);
+        outline: 1px solid salmon;
+        background-color: saddlebrown;
+      }
+
+      .properties {
+        display: none;
+        position: absolute;
+        flex-direction: column;
+        background-color: hsla(0, 0%, 90%, 0.845);
+        width: max(10vh, 80px);
+        border-bottom-right-radius: 5px;
+        border-bottom-left-radius: 5px;
+      }
+
+      .properties::before {
+        content: "";
+        position: absolute;
+        left: -20px;
+        top: -20px;
+        width: 120%;
+        height: 120%;
+      }
+
+      .items {
+        z-index: 99;
+        padding: 2px 0px 2px 3px;
+      }
+
+      .items:last-child {
+        border-bottom-right-radius: 5px;
+        border-bottom-left-radius: 5px;
+      }
+
+      .items:hover {
+        background: hsla(123, 100%, 50%, 0.2);
+        cursor: pointer;
+      }
+
+      #magnifier.shifted {
+        transform: translate(180px, 180px);
+      }
+
+      .colorpicker {
+        display: none;
+        position: absolute;
+        width: 10rem;
+        height: 10rem;
+        background: red;
+      }
+
+      .colorbar {
+        display: flex;
+        height: 1rem;
+        background-color: green;
+        justify-content: flex-end;
+        align-items: center;
+      }
+
+      .colorbar > span {
+        width: 10px;
+        padding: 2px;
+      }
+
+      input[type="color"] {
+        width: 100%;
+        height: 100%;
+        background-color: green;
+        display: inline;
+        padding: 0;
+        margin: 0;
+        border-style: none;
+        border-width: 0px;
+      }
+
+      .center {
+        text-align: center;
+      }
+
+      div#tasks {
+        position: absolute;
+        right: 4rem;
+        top: auto;
+        bottom: auto;
+        width: 350px;
+        height: fit-content;
+        padding: 10px 15px 10px 15px;
+        border: 1px solid black;
+        background-color: bisque;
+      }
+
+      div#header {
+        font-weight: 300;
+        padding: 4px;
+        font-size: 15px;
+        text-align: justify;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="center">
+      <h1>Colourable, Draggable Element Challenge</h1>
+    </div>
+    <div class="magnifier draggable">
+      <div class="properties">
+        <span class="items" onclick="handleDelete(event)">Delete</span>
+        <span class="items" onclick="handleStyle(event)">Style</span>
+        <span class="items" onclick="handleCreate(event)">Create</span>
+      </div>
+    </div>
+    <div class="colorpicker draggable">
+      <div class="colorbar">
+        <span onclick="closeHandle(event)">x</span>
+      </div>
+      <input type="color" id="colorpicker" onchange="colorHandle(event)" />
+    </div>
+    <div id="tasks">
+      <div id="header">
+        Your task involves the creation of a website encompassing an
+        <strong>interactive draggable element</strong> as its initial component.
+        This interactive element should afford the capability to execute actions
+        such as <strong>Deletion</strong>, <strong>Styling</strong>, and
+        <strong>Creation</strong>:
+      </div>
+    </div>
+
+    <script>
+      /** @type HTMLDivElement */
+      const colorpicker = document.querySelector(".colorpicker");
+
+      /** @type HTMLDivElement[] */
+      const magnifier = Array.from(document.querySelectorAll(".magnifier"));
+
+      /** @type HTMLDivElement[] */
+      const draggable = Array.from(document.querySelectorAll(".draggable"));
+
+      /**
+       * @param {[]} listOfNode
+       */
+      function init(listOfNode) {
+        listOfNode.forEach((node) => hydrate(node));
+        draggable.forEach((node) => applyDraggebility(node));
+      }
+
+      /**
+       * @param {HTMLElement} node
+       * @param {Object} coordinate
+       */
+      function moveElmentByCoordinate(node, { eventX, eventY }, { x, y }) {
+        node.style.left = `${x - eventX}px`;
+        node.style.top = `${y - eventY}px`;
+      }
+
+      function hydrate(node) {
+        node.addEventListener("contextmenu", function (e) {
+          e.preventDefault();
+          const menu = this.children[0];
+          menu.style.top = `${e.layerY}px`;
+          menu.style.left = `${e.layerX}px`;
+          this.children[0].style.display = "flex";
+
+          menu.addEventListener("mouseleave", function () {
+            this.style.display = "none";
+          });
+        });
+
+        applyDraggebility(node);
+      }
+
+      function applyDraggebility(node) {
+        node.addEventListener("mousedown", function (e) {
+          const { layerX: eventX, layerY: eventY } = e;
+
+          document.addEventListener("mousemove", mousemove);
+          document.addEventListener("mouseup", mouseup);
+
+          function mousemove(e) {
+            const { clientX, clientY } = e;
+            requestAnimationFrame(() =>
+              moveElmentByCoordinate(
+                node,
+                { eventX, eventY },
+                { x: clientX, y: clientY }
+              )
+            );
+          }
+
+          function mouseup() {
+            document.removeEventListener("mousemove", mousemove);
+            document.removeEventListener("mouseup", mouseup);
+          }
+        });
+      }
+
+      window.onload = () => init(magnifier);
+    </script>
+  </body>
+</html>
