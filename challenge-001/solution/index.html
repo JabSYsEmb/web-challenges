@@ -5,11 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=3.0" />
     <title>Colorpicker Challenge</title>
     <script>
-      let coloredObj = null;
       function handleCreate(event) {
         event.preventDefault();
         const el = document.createElement("div"); // <div.magnifier>
         el.classList.add("magnifier");
+        el.setAttribute("counter", `${counter}`);
 
         const properties = document.createElement("div"); // <div.properties>
         properties.classList.add("properties");
@@ -27,13 +27,16 @@
           return item;
         });
 
-        items.forEach((item) => properties.appendChild(item));
-
+        properties.append(...items);
         el.appendChild(properties);
-
         document.body.appendChild(el);
+
         hydrate(el);
-        event.target.parentNode.style.display = "none";
+        applyDraggebility(el);
+
+        const srcElement = getParentByClass(event.target, "properties");
+        srcElement.style.display = "none";
+        counter += 1;
       }
 
       function getParentByClass(node, className) {
@@ -52,13 +55,11 @@
         event.preventDefault();
         colorpicker.style.left = `${event.clientX}px`;
         colorpicker.style.top = `${event.clientY}px`;
-        colorpicker.style.display = `inline`;
-        event.target.parentNode.style.display = "none";
-        coloredObj = getParentByClass(event.target, "magnifier");
-      }
+        colorpicker.style.display = `block`;
 
-      function closeHandle(event) {
-        colorpicker.style.display = "none";
+        const srcElement = getParentByClass(event.target, "properties");
+        srcElement.style.display = "none";
+        coloredObj = getParentByClass(event.target, "magnifier");
       }
 
       function handleDelete(event) {
@@ -71,6 +72,142 @@
         if (!coloredObj) return;
         coloredObj.style.background = event.target.value;
       }
+
+      function colorpickerCloseHandler(event) {
+        colorpicker.style.display = "none";
+      }
+
+      function setup(hydrateNodes, draggableNodes) {
+        hydrateNodes.forEach((node) => hydrate(node));
+        draggableNodes.forEach((node) => applyDraggebility(node));
+      }
+
+      function moveElementByCoordinate(node, { eventX, eventY }, { x, y }) {
+        const left = x - eventX;
+        const top = y - eventY;
+        node.style.left = `${left}px`;
+        node.style.top = `${top}px`;
+        updateLocalStorage(node, { x: left, y: top });
+      }
+
+      /**
+       * @param {HTMLElement} node
+       */
+      function createLocalStorage(node) {
+        const id = Number(node.getAttribute("counter"));
+        const key = `magnifier-${id}`;
+        const storage = window.localStorage.getItem(key);
+        if (!storage) {
+          const { x, y } = node.getBoundingClientRect();
+          window.localStorage.setItem(key, `${x}:${y}`);
+        }
+        return key;
+      }
+
+      function applyLocalStorageCoor(node) {
+        const nodeKey = createLocalStorage(node);
+        const [x, y] = localStorage.getItem(nodeKey)?.split(":").map(Number);
+        if (x && y) {
+          node.style.top = `${y}px`;
+          node.style.left = `${x}px`;
+        }
+      }
+
+      function updateLocalStorage(node, { x, y }) {
+        const nodeKey = createLocalStorage(node);
+        localStorage.setItem(nodeKey, `${x}:${y}`);
+      }
+
+      function hydrate(node) {
+        const nodeKey = createLocalStorage(node);
+        if (localStorage.getItem(nodeKey)) {
+          const [x, y] = localStorage.getItem(nodeKey)?.split(":").map(Number);
+          node.style.top = `${y}px`;
+          node.style.left = `${x}px`;
+        }
+
+        node.addEventListener("contextmenu", function (e) {
+          e.preventDefault();
+          const menu = this.children[0];
+          menu.style.top = `${e.layerY}px`;
+          menu.style.left = `${e.layerX}px`;
+          this.children[0].style.display = "flex";
+
+          menu.addEventListener("mouseleave", function () {
+            this.style.display = "none";
+          });
+        });
+      }
+
+      function applyDraggebility(node) {
+        node.addEventListener("mousedown", function (e) {
+          const { layerX: eventX, layerY: eventY } = e;
+
+          document.addEventListener("mousemove", mousemove);
+          document.addEventListener("mouseup", mouseup);
+
+          function mousemove(e) {
+            const { clientX, clientY } = e;
+            requestAnimationFrame(() =>
+              moveElementByCoordinate(
+                node,
+                { eventX, eventY },
+                { x: clientX, y: clientY }
+              )
+            );
+          }
+
+          function mouseup() {
+            document.removeEventListener("mousemove", mousemove);
+            document.removeEventListener("mouseup", mouseup);
+          }
+        });
+      }
+    </script>
+  </head>
+
+  <body>
+    <div class="center">
+      <h1>Colourable, Draggable Element Challenge</h1>
+    </div>
+    <div counter="0" class="magnifier draggable">
+      <div class="properties">
+        <span class="items" onclick="handleDelete(event)">Delete</span>
+        <span class="items" onclick="handleStyle(event)">Style</span>
+        <span class="items" onclick="handleCreate(event)">Create</span>
+      </div>
+    </div>
+    <div class="colorpicker draggable">
+      <div class="colorbar">
+        <span onclick="colorpickerCloseHandler(event)">x</span>
+      </div>
+      <input type="color" id="colorpicker" onchange="colorHandle(event)" />
+    </div>
+    <div id="tasks">
+      <div id="header">
+        Your task involves the creation of a website encompassing an
+        <strong>interactive draggable element</strong> as its initial component.
+        This interactive element should afford the capability to execute actions
+        such as <strong>Deletion</strong>, <strong>Styling</strong>, and
+        <strong>Creation</strong>:
+      </div>
+    </div>
+
+    <script>
+      let counter = 1; // 0 refers to inital box
+      /** @type HTMLDivElement */
+      let coloredObj = null;
+
+      /** @type HTMLDivElement */
+      const colorpicker = document.querySelector(".colorpicker");
+
+      /** @type HTMLDivElement[] */
+      const magnifier = Array.from(document.querySelectorAll(".magnifier"));
+
+      /** @type HTMLDivElement[] */
+      const draggable = Array.from(document.querySelectorAll(".draggable"));
+
+      window.onload = () => setup(magnifier, draggable);
     </script>
 
     <style>
@@ -187,104 +324,5 @@
         text-align: justify;
       }
     </style>
-  </head>
-
-  <body>
-    <div class="center">
-      <h1>Colourable, Draggable Element Challenge</h1>
-    </div>
-    <div class="magnifier draggable">
-      <div class="properties">
-        <span class="items" onclick="handleDelete(event)">Delete</span>
-        <span class="items" onclick="handleStyle(event)">Style</span>
-        <span class="items" onclick="handleCreate(event)">Create</span>
-      </div>
-    </div>
-    <div class="colorpicker draggable">
-      <div class="colorbar">
-        <span onclick="closeHandle(event)">x</span>
-      </div>
-      <input type="color" id="colorpicker" onchange="colorHandle(event)" />
-    </div>
-    <div id="tasks">
-      <div id="header">
-        Your task involves the creation of a website encompassing an
-        <strong>interactive draggable element</strong> as its initial component.
-        This interactive element should afford the capability to execute actions
-        such as <strong>Deletion</strong>, <strong>Styling</strong>, and
-        <strong>Creation</strong>:
-      </div>
-    </div>
-
-    <script>
-      /** @type HTMLDivElement */
-      const colorpicker = document.querySelector(".colorpicker");
-
-      /** @type HTMLDivElement[] */
-      const magnifier = Array.from(document.querySelectorAll(".magnifier"));
-
-      /** @type HTMLDivElement[] */
-      const draggable = Array.from(document.querySelectorAll(".draggable"));
-
-      /**
-       * @param {[]} listOfNode
-       */
-      function init(listOfNode) {
-        listOfNode.forEach((node) => hydrate(node));
-        draggable.forEach((node) => applyDraggebility(node));
-      }
-
-      /**
-       * @param {HTMLElement} node
-       * @param {Object} coordinate
-       */
-      function moveElmentByCoordinate(node, { eventX, eventY }, { x, y }) {
-        node.style.left = `${x - eventX}px`;
-        node.style.top = `${y - eventY}px`;
-      }
-
-      function hydrate(node) {
-        node.addEventListener("contextmenu", function (e) {
-          e.preventDefault();
-          const menu = this.children[0];
-          menu.style.top = `${e.layerY}px`;
-          menu.style.left = `${e.layerX}px`;
-          this.children[0].style.display = "flex";
-
-          menu.addEventListener("mouseleave", function () {
-            this.style.display = "none";
-          });
-        });
-
-        applyDraggebility(node);
-      }
-
-      function applyDraggebility(node) {
-        node.addEventListener("mousedown", function (e) {
-          const { layerX: eventX, layerY: eventY } = e;
-
-          document.addEventListener("mousemove", mousemove);
-          document.addEventListener("mouseup", mouseup);
-
-          function mousemove(e) {
-            const { clientX, clientY } = e;
-            requestAnimationFrame(() =>
-              moveElmentByCoordinate(
-                node,
-                { eventX, eventY },
-                { x: clientX, y: clientY }
-              )
-            );
-          }
-
-          function mouseup() {
-            document.removeEventListener("mousemove", mousemove);
-            document.removeEventListener("mouseup", mouseup);
-          }
-        });
-      }
-
-      window.onload = () => init(magnifier);
-    </script>
   </body>
 </html>
