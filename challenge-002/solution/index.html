@@ -4,43 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Web Performance</title>
-    <script>
-      let boxColor = "green";
-      let hydrated = false;
 
-      function colorBox(boxNode, color) {
-        boxNode.style.background = `${color}`;
-      }
-
-      function buttonOnClick(event) {
-        event.preventDefault();
-        document.querySelectorAll(".box").forEach((node) => {
-          colorBox(node, boxColor);
-        });
-      }
-
-      function colorHandle(event) {
-        boxColor = event.target.value;
-      }
-
-      function hydrate() {
-        const buttons = document.querySelectorAll("button");
-        buttons.forEach((btn) => {
-          setTimeout(() => {
-            btn.addEventListener("click", (event) => buttonOnClick(event));
-            hydrated = true;
-          }, 3000);
-        });
-      }
-
-      const intervalId = setInterval(() => {
-        if (!hydrated) return;
-        document.getElementById("hydration-status").classList.add("done");
-        clearInterval(intervalId);
-      }, 0);
-
-      window.onload = hydrate;
-    </script>
     <style>
       .box {
         width: 100px;
@@ -53,14 +17,22 @@
         background: green;
       }
 
+      .status-div {
+        height: 9rem;
+        min-width: fit-content;
+        width: 9rem;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+        align-items: center;
+      }
+
       #hydration-status {
-        position: absolute;
-        right: 2rem;
-        top: 2rem;
         width: 100px;
         height: 100px;
         background: red;
-        border: 1px solid black;
+        border: 1.8px solid white;
+        outline: 1px solid black;
         border-radius: 50%;
       }
 
@@ -102,23 +74,66 @@
 
       .header {
         min-height: 10rem;
-        max-width: 10rem;
         align-items: center;
         display: flex;
-        flex-direction: column;
-        justify-content: space-around;
+        justify-content: space-between;
       }
     </style>
   </head>
+
   <body>
     <div class="header">
-      <input onchange="colorHandle(event)" type="color" value="#0000ff" />
-      <button>colorBoxes</button>
+      <div class="status-div">
+        <input onchange="colorHandle(event)" type="color" value="#ff0000" />
+        <button>colorBoxes</button>
+      </div>
+      <div class="status-div">
+        <div id="hydration-status"></div>
+        <span style="font-size: 15px">Hydration - Status Indicator</span>
+      </div>
     </div>
-    <span id="hydration-status"></span>
     <div id="first" class="box"></div>
     <div id="second" class="box"></div>
     <div id="third" class="box"></div>
     <div id="forth" class="box"></div>
   </body>
+
+  <script>
+    let boxColor = "red";
+    let hydrated = false;
+
+    function colorBox(boxNode, color) {
+      boxNode.style.background = `${color}`;
+    }
+
+    function buttonOnClick(event) {
+      event.preventDefault();
+      document.querySelectorAll(".box").forEach((node) => {
+        colorBox(node, boxColor);
+      });
+    }
+
+    function colorHandle(event) {
+      boxColor = event.target.value;
+    }
+
+    function hydrate() {
+      const buttons = document.querySelectorAll("button");
+      /** lazy hydration */
+      setTimeout(() => {
+        buttons.forEach((btn) => {
+          btn.addEventListener("click", buttonOnClick);
+        });
+        hydrated = true;
+      }, 3000);
+    }
+
+    const intervalId = setInterval(() => {
+      if (!hydrated) return;
+      document.getElementById("hydration-status").classList.add("done");
+      clearInterval(intervalId);
+    }, 500);
+
+    window.onload = hydrate;
+  </script>
 </html>
