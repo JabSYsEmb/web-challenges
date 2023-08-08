@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Web Performance</title>
+    <script>
+      let boxColor = "green";
+      let hydrated = false;
+
+      function colorBox(boxNode, color) {
+        boxNode.style.background = `${color}`;
+      }
+
+      function buttonOnClick(event) {
+        event.preventDefault();
+        document.querySelectorAll(".box").forEach((node) => {
+          colorBox(node, boxColor);
+        });
+      }
+
+      function colorHandle(event) {
+        boxColor = event.target.value;
+      }
+
+      function hydrate() {
+        const buttons = document.querySelectorAll("button");
+        buttons.forEach((btn) => {
+          setTimeout(() => {
+            btn.addEventListener("click", (event) => buttonOnClick(event));
+            hydrated = true;
+          }, 3000);
+        });
+      }
+
+      const intervalId = setInterval(() => {
+        if (!hydrated) return;
+        document.getElementById("hydration-status").classList.add("done");
+        clearInterval(intervalId);
+      }, 0);
+
+      window.onload = hydrate;
+    </script>
+    <style>
+      .box {
+        width: 100px;
+        height: 100px;
+        position: absolute;
+        border: 1px solid black;
+      }
+
+      #hydration-status.done {
+        background: green;
+      }
+
+      #hydration-status {
+        position: absolute;
+        right: 2rem;
+        top: 2rem;
+        width: 100px;
+        height: 100px;
+        background: red;
+        border: 1px solid black;
+        border-radius: 50%;
+      }
+
+      #first {
+        top: 280px;
+        left: 100px;
+      }
+      #second {
+        top: 80px;
+        left: 1080px;
+      }
+      #third {
+        top: 480px;
+        left: 390px;
+      }
+      #forth {
+        top: 180px;
+        left: 920px;
+      }
+
+      input[type="color"] {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        overflow: hidden;
+      }
+
+      input[type="color"]::-webkit-color-swatch {
+        border: none;
+        border-radius: 50%;
+        padding: 0;
+      }
+
+      input[type="color"]::-webkit-color-swatch-wrapper {
+        border: none;
+        border-radius: 50%;
+        padding: 0;
+      }
+
+      .header {
+        min-height: 10rem;
+        max-width: 10rem;
+        align-items: center;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="header">
+      <input onchange="colorHandle(event)" type="color" value="#0000ff" />
+      <button>colorBoxes</button>
+    </div>
+    <span id="hydration-status"></span>
+    <div id="first" class="box"></div>
+    <div id="second" class="box"></div>
+    <div id="third" class="box"></div>
+    <div id="forth" class="box"></div>
+  </body>
+</html>
