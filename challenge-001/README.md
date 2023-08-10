@@ -1,13 +1,13 @@
 ### Challenge - 001
 
-What can you expect from this challenge:
+The aim of this challenge is dealing with the followings:
 
-- Work with event listeners (MouseEvent)
+- Inspect Events (MouseEvent)
 - Add and remove eventListeners
-- Positioning an element `position: absolute`
-- Apply/remove classes from js
+- How to position an element `position: absolute`
+- Apply/remove classes using js
 - Hydrate an element on creation with js
-- Work with Localstorage
+- How to Work with Localstorage
 
 ### Task
 
