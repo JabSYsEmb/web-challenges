@@ -132,8 +132,9 @@
       if (!hydrated) return;
       document.getElementById("hydration-status").classList.add("done");
       clearInterval(intervalId);
-    }, 500);
+    }, 0);
 
-    window.onload = hydrate;
+    window.addEventListener("DOMContentLoaded", hydrate);
+    // window.onload = hydrate;
   </script>
 </html>
