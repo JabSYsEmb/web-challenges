@@ -6,12 +6,17 @@ function insertElement(node, loc) {
 
 function createElement() {
   const el = document.createElement("div");
-  el.innerHTML = `<p>This has been added afterwards`;
+  el.innerHTML = `<p>Attention:<br />I couldn't find the parent 
+                  component immediatly thus I took approximately 
+                  2 seconds executing js scripts and looking around.
+                  </p>`;
+  el.classList.add("no-border");
   el.classList.add("js-div");
 
   return el;
 }
 
+console.log("Start executing main.js");
 (async () => {
   let h1 = document.getElementById("insertContent");
 
@@ -24,8 +29,16 @@ function createElement() {
           clearInterval(id);
         }
       }, 2000);
-    }).then();
+    });
   }
+
+  // 2 sec delays
+  // let idx = 0;
+  // setTimeout(() => {
+  //   while (idx <= 3_200 * 1_000_000) {
+  //     idx += 1;
+  //   }
+  // }, 56.5);
 
   const insertedNode = insertElement(createElement(), h1);
 
@@ -35,13 +48,4 @@ function createElement() {
 
   img.src =
     "https://i.guim.co.uk/img/media/26392d05302e02f7bf4eb143bb84c8097d09144b/446_167_3683_2210/master/3683.jpg?width=620&dpr=1&s=none";
-
-
-
-  // 2 sec delays
-  // let idx = 0;
-  // while (idx <= 3_200 * 1_000_000) {
-  //   idx += 1;
-  // }
-
 })();

@@ -1,41 +1,42 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <script>
-      window.addEventListener("load", (e) =>
-        console.log(`onload event: ${e.timeStamp}`)
-      );
-      document.addEventListener("DOMContentLoaded", (e) =>
-        console.log(`DOMContentLoaded event: ${e.timeStamp}`)
-      );
-      document.addEventListener("readystatechange", (event) =>
-        console.log(`${event.type}: ${event.timeStamp}`)
-      );
-    </script>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <!-- default: loads content as soon as it's encountered -->
-    <!-- defer: loads content before firing DOMContentLoaded -->
-    <!-- async: loads content after firing DOMContentLoaded -->
-    <script src="./js/main.js"></script>
-    <link href="./css/main.css" rel="stylesheet" />
-    <title>Document</title>
-  </head>
-  <body>
-    <nav>
-      <a href="#">HTML</a>
-      <a href="#">CSS</a>
-      <a href="#">JS</a>
-    </nav>
-    <div class="grid">
-      <div class="body">
-        <div id="insertContent" class="flex-center right-border"></div>
-        <div id="insertImage" class="flex-center">
-          <img alt="cat" />
-        </div>
+<head>
+  <script>
+    window.addEventListener("load", (e) =>
+      console.log(`onload event: ${e.timeStamp}`)
+    );
+    document.addEventListener("DOMContentLoaded", (e) =>
+      console.log(`DOMContentLoaded event: ${e.timeStamp}`)
+    );
+    document.addEventListener("readystatechange", (event) =>
+      console.log(`${event.type}: ${event.timeStamp}`)
+    );
+  </script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <script src="./js/main.js"></script>
+  <link href="./css/main.css" rel="stylesheet" />
+  <title>Document</title>
+</head>
+
+<body>
+  <nav>
+    <a href="#">HTML</a>
+    <a href="#">CSS</a>
+    <a href="#">JS</a>
+  </nav>
+  <div class="grid">
+    <div class="body">
+      <div id="insertContent" class="flex-center right-border"></div>
+      <div id="insertImage" class="flex-center">
+        <img alt="cat" />
       </div>
-      <div class="footer flex-center">FOOTER</div>
     </div>
-  </body>
+    <div class="footer flex-center">FOOTER</div>
+  </div>
+</body>
+
+
 </html>
