@@ -11,6 +11,11 @@ body {
   justify-content: space-evenly;
 }
 
+h1 > span {
+  color: red;
+  font-size: larger;
+}
+
 .body {
   display: grid;
   grid-template-columns: repeat(10, 10%);
@@ -44,8 +49,4 @@ body {
 .body__container-2:hover,
 .body__container-1:hover {
   cursor: pointer;
-}
-
-.body__container-2:hover {
-  transform: scaleX(0.5) scaleY(0.5);
 }
