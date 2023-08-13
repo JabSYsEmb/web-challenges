@@ -4,15 +4,11 @@ body {
   padding: 0;
 }
 
-* {
-  outline: 1px solid salmon;
-}
-
 .header {
   height: 40px;
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: space-evenly;
 }
 
 .body {
@@ -39,22 +35,17 @@ body {
 }
 
 .body__container-2 {
+  display: none;
   grid-row: 3/7;
   grid-column: 7/-3;
+  background-color: orange;
 }
 
-.body__container-1:hover,
-.body__container-2:hover {
+.body__container-2:hover,
+.body__container-1:hover {
   cursor: pointer;
 }
 
 .body__container-2:hover {
   transform: scaleX(0.5) scaleY(0.5);
 }
-
-/* 
-container-1
-w: 10% h: 20% 
-container-2
-w: 20% h: 40%
-*/
