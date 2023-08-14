@@ -32,14 +32,6 @@ console.log("Start executing main.js");
     });
   }
 
-  // 2 sec delays
-  // let idx = 0;
-  // setTimeout(() => {
-  //   while (idx <= 3_200 * 1_000_000) {
-  //     idx += 1;
-  //   }
-  // }, 56.5);
-
   const insertedNode = insertElement(createElement(), h1);
 
   insertedNode.classList.add("inserted");
