@@ -2,106 +2,109 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Testing</title>
-  <style>
-    div:hover {
-      cursor: pointer;
-    }
-
-    @keyframes animateobj {
-      0% {
-        width: 4rem;
-        height: 4rem;
-      }
-
-      100% {
-        width: 20vw;
-        height: 20vw
-      }
-    }
-
-    div {
-      position: absolute;
-      transition: all 0.5s ease-in-out;
-      width: 4rem;
-      height: 4rem;
-      display: flex;
-      justify-content: space-around;
-      text-align: justify;
-      padding: 20px;
-      align-items: center;
-      border-radius: 10px;
-    }
-
-    div.main {
-      top: 5rem;
-      left: 5rem;
-      overflow: hidden;
-      background: slategrey;
-    }
-
-    div.second {
-      right: 5rem;
-      top: 5rem;
-      background-color: burlywood;
-    }
-
-    div.expanded {
-      /* transform: scale(2); */
-      width: 200px;
-      height: 200px;
-      padding: 1px;
-    }
-
-    span {
-      position: absolute;
-      width: 4rem;
-      height: 4rem;
-    }
-
-    div.expanded>span.visible {
-      display: none;
-    }
-
-    div.expanded>span.hidden {
-      display: inline !important;
-    }
-
-    span.hidden {
-      display: none;
-      font-size: 10px;
-      /* scale: 0.4; */
-    }
-  </style>
-
-  <head>
-
-  <body>
-    <div class="main">
-      <span class="visible">click me</span>
-      <span class="hidden">Setting the top, right, bottom, and left properties of a relatively-positioned element will
-        cause it to be adjusted away from its normal position. Other content will not be adjusted to fit into any gap
-        left by the element. </span>
-    </div>
-    <div class="second"><span>click me</span></div>
-    <script>
-      function onclickBtn() {
-        if (this.classList.contains('expanded')) {
-          this.classList.remove('expanded');
-          this.querySelector('span').classList.remove('visible-hidden');
-          return;
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Testing</title>
+    <style>
+        div:hover {
+            cursor: pointer;
         }
-        this.classList.add("expanded");
-        this.querySelector('span').classList.add('visible-hidden');
-      }
 
-      const divSec = document.querySelector("div.main");
-      divSec.addEventListener("click", onclickBtn);
-      const div = document.querySelector("div.second");
-      div.addEventListener("click", onclickBtn);
-    </script>
-  </body>
+        @keyframes animateobj {
+            0% {
+                width: 4rem;
+                height: 4rem;
+            }
+
+            100% {
+                width: 20vw;
+                height: 20vw
+            }
+        }
+
+        div {
+            position: absolute;
+            transition: all 0.5s ease-in-out;
+            width: 4rem;
+            height: 4rem;
+            display: flex;
+            justify-content: space-around;
+            text-align: justify;
+            padding: 20px;
+            align-items: center;
+            border-radius: 10px;
+        }
+
+        div.main {
+            top: 5rem;
+            left: 5rem;
+            overflow: hidden;
+            background: slategrey;
+        }
+
+        div.second {
+            right: 5rem;
+            top: 5rem;
+            background-color: burlywood;
+        }
+
+        div.expanded {
+            /* transform: scale(2); */
+            width: 200px;
+            height: 200px;
+            padding: 1px;
+        }
+
+        span {
+            position: absolute;
+            width: 4rem;
+            height: 4rem;
+        }
+
+        div.expanded>.visible {
+            display: none;
+        }
+
+        div.expanded>span.hidden {
+            display: inline;
+        }
+
+        span.hidden {
+            display: none;
+            font-size: 10px;
+            /* scale: 0.4; */
+        }
+
+    </style>
+
+    <head>
+
+    <body>
+        <div class="main">
+            <span class="visible">click me</span>
+            <span class="hidden">Setting the top, right, bottom, and left properties of a relatively-positioned element
+                will
+                cause it to be adjusted away from its normal position. Other content will not be adjusted to fit into
+                any gap
+                left by the element. </span>
+        </div>
+        <div class="second"><span>click me</span></div>
+        <script>
+            function onclickBtn() {
+                if (this.classList.contains('expanded')) {
+                    this.classList.remove('expanded');
+                    this.querySelector('span').classList.remove('visible-hidden');
+                    return;
+                }
+                this.classList.add("expanded");
+                this.querySelector('span').classList.add('visible-hidden');
+            }
+
+            const divSec = document.querySelector("div.main");
+            divSec.addEventListener("click", onclickBtn);
+            const div = document.querySelector("div.second");
+            div.addEventListener("click", onclickBtn);
+        </script>
+    </body>
 
 </html>

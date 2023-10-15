@@ -1,6 +1,6 @@
 ## Challenge - 005
 
-Still in progress
+- try to apply FLIP technique and make smooth transition among two visible html elments on a web page
 
 ## References
 
