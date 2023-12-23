@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <style>
+        body,
+        html {
+            margin: 0;
+            padding: 0;
+            block-size: 100%;
+        }
+
+        .compare {
+            display: grid;
+            height: 100%;
+
+            >* {
+                grid-area: 1 / 1;
+            }
+
+            &>section {
+                display: grid;
+                place-content: center;
+            }
+
+            input[type="range"] {
+                appearance: none;
+                background: transparent;
+                z-index: 1;
+
+                &::-moz-range-thumb {
+                    background-color: white;
+                    height: 100%;
+                    width: 4px;
+                    cursor: pointer;
+                }
+            }
+
+            .before {
+                background: linear-gradient(to right, black, red);
+                mask: linear-gradient(to right, #000 0, var(--pos, 50%), #0000 0);
+            }
+
+            .after {
+                background: linear-gradient(to right, green, blue);
+                mask: linear-gradient(to right, #0000 0, var(--pos, 50%), #000 0);
+            }
+        }
+
+        img {
+            height: 80svh;
+            object-fit: cover;
+            border: 2px solid white;
+        }
+    </style>
+</head>
+
+
+<body>
+    <div class="compare">
+        <section class="before">
+            <img src="https://assets-global.website-files.com/64c73d04a946980a4476537e/64cd4b9065d907b296812105_groceries.png"
+                alt="groceries img" />
+        </section>
+        <section class="after">
+            <img src="https://assets-global.website-files.com/64c73d04a946980a4476537e/64cd4c2274b417b090395329_plants.png"
+                alt="plants img" />
+        </section>
+        <input type="range" id="range" step="0.1" />
+    </div>
+
+    <script>
+        range.oninput = () => {
+            document.body.style.setProperty('--pos', range.value + "%");
+        }
+    </script>
+</body>
+
+</html>
