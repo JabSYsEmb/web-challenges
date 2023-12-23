@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div class="outer">
+        <div class="inner">
+            <h1>Hello</h1>
+            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Illo inventore consequuntur, tempore iusto hic
+                recusandae. Obcaecati quo laborum, adipisci tempora natus quas ullam deleniti molestias voluptatem
+                excepturi quos odit magnam!
+            </p>
+        </div>
+
+    </div>
+
+    <style>
+        body,
+        html {
+            padding: 0;
+            margin: 0;
+            height: 100%;
+            width: 100%;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            display: grid;
+            justify-items: center;
+            align-items: center;
+            background-color: beige;
+        }
+
+        .outer {
+            border-radius: 10px;
+            width: 25%;
+            height: 200px;
+            background: white;
+
+            &>.inner {
+                clip-path: circle(10% at 0% 0%);
+                transition: clip-path .5s ease-in-out;
+                background-color: goldenrod;
+                border-radius: 10px;
+                padding: 0.5rem;
+                height: 100%;
+                width: 100%;
+
+                &>h1 {
+                    margin-bottom: 1rem;
+                }
+            }
+
+            &:hover>.inner {
+                clip-path: circle(100%);
+            }
+        }
+    </style>
+</body>
+
+</html>
