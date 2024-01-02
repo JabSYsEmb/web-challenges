@@ -56,12 +56,13 @@
         .post {
             resize: both;
             container-type: inline-size;
+            container-name: post;
             border: 2px solid;
             flex-grow: 0.8;
         }
 
         /* Apply styles if the container is narrower than 650px */
-        @container (width < 650px) {
+        @container post (width < 650px) {
             .card {
                 width: 50%;
                 background-color: gray;
