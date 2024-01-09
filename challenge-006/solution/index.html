@@ -5,71 +5,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=3.0" />
     <title>History API</title>
-    <style>
-        html,
-        body {
-            padding: 0;
-            margin: 0;
-        }
-
-        ul {
-            gap: 4rem;
-            display: flex;
-            list-style-type: none;
-            justify-content: center;
-        }
-
-        body {
-            display: grid;
-            height: 100vh;
-            width: 100vw;
-            grid-template-rows: 10rem 1fr 5rem;
-        }
-
-        main {
-            display: flex;
-        }
-
-
-        span {
-            display: block;
-            text-align: center;
-        }
-
-        .card {
-            margin: 10px;
-            border: 2px dotted;
-            font-size: 1.5em;
-            background-color: red;
-        }
-
-        .adjust {
-            overflow: auto;
-            width: 100px;
-            height: 100%;
-            background-color: beige;
-            resize: horizontal;
-            direction: rtl;
-        }
-
-        /* A container context based on inline size */
-        .post {
-            resize: both;
-            container-type: inline-size;
-            container-name: post;
-            border: 2px solid;
-            flex-grow: 0.8;
-        }
-
-        /* Apply styles if the container is narrower than 650px */
-        @container post (width < 650px) {
-            .card {
-                width: 50%;
-                background-color: gray;
-                font-size: 1em;
-            }
-        }
-    </style>
+    <link rel="stylesheet" href="./css/style.css" />
 </head>
 
 <body>
@@ -99,12 +35,12 @@
                 <p>Card content</p>
             </div>
         </div>
-        <div class="adjust">II</div>
+        <div class="adjust">Change the size of this block and observe the change!</div>
     </main>
     <footer>
         <ul>
             <li>
-                <address><a href="tel:+90535353535" target="_blank">tel: +9053535</a></address>
+                <address><a href="tel:+90XXXXXXXXX" target="_blank">tel: (***) *** ** **</a></address>
             </li>
             <li>
                 <address><a href="mailto:cabb@mail.com" target="_blank">mail: cabbar.serif@hotmail.com</a></address>

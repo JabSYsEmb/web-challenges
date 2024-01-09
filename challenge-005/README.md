@@ -1,6 +1,16 @@
 ## Challenge - 005
 
-- try to apply FLIP technique and make smooth transition among two visible html elments on a web page
+This challenge aims to familiarize developers with the FLIP (First, Last, Invert, Play) technique, facilitating seamless transitions between two visible HTML elements on a web page using JavaScript.
+
+## Tasks
+
+- Create a web page with two distinct HTML elements.
+- Implement the FLIP technique to smoothly transition between these elements.
+- On interaction (e.g., click), smoothly transform one element into another with an animated transition.
+
+# Hints
+
+Consider utilizing `transform`, `opacity`, and `transition` properties in CSS for smoother visual transitions.
 
 ## References
 
